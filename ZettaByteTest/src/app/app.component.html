@@ -1,0 +1,168 @@
+<h1>{{title}}</h1>
+<!-- <div *ngFor="let group of ZetaGroup" class="list-group-item">
+    <h4>{{ group.name }}</h4>
+</div> -->
+<!-- <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0"  *ngFor="let group of ZetaGroup">
+  <ngb-panel title="{{group.name}}">
+    <ng-template ngbPanelContent>
+      {{group.description}}
+    </ng-template>
+  </ngb-panel>
+</ngb-accordion> -->
+
+<table class="table table-bordered table-striped" ng-grid>
+
+  <legend>Groups
+    <button class="btn btn-lg btn-outline-primary" (click)="open(addGroup)">+</button>
+  </legend>
+  <tr *ngFor="let group of ZetaGroup">
+    <td title="Name">{{group.name}}</td>
+    <td title="Estimate">{{group.description}}</td>
+  </tr>
+</table>
+<table class="table table-bordered table-striped" ng-grid>
+  <legend>Teams</legend>
+  <tr *ngFor="let team of Teams">
+    <td title="Name">{{team.name}}</td>
+    <td title="Technology Stack">{{team.techStack}}</td>
+    <td title="Description">{{team.description}}</td>
+  </tr>
+</table>
+<table class="table table-bordered table-striped" ng-grid>
+  <legend>Team Members</legend>
+  <tr *ngFor="let members of TeamMemebers">
+    <td title="Name">{{members.firstName + " " + members.middleName + " " + members.lastName}}</td>
+    <td title="EmailAddress">{{members.EmailAddress}}</td>
+  </tr>
+</table>
+
+
+<ng-template #addGroup let-c="close" let-d="dismiss">
+  <p [hidden]="AlertMessage.length <= 0">
+    <ngb-alert [dismissible]="false">
+      <strong>{{AlertMessage}}</strong>
+    </ngb-alert>
+  </p>
+  <div class="modal-header">
+    <h4 class="modal-title">Add Group</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-12 col-lg-12">
+        <label class="control-label col-sm-4" for="name">Name</label>
+        <div class="col-sm-8 col-md-6">
+          <input type="text" [(ngModel)]="GroupModel.name" placeholder="Grpup Name" style="width:400px">
+        </div>
+      </div>
+      <div class="col-12 col-lg-12">
+        <label class="control-label col-sm-4" for="name">Description</label>
+        <div class="col-sm-8 col-md-6">
+          <textarea [(ngModel)]="GroupModel.description" placeholder="Group Description" style="width:400px"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="saveGroup()">Save</button>
+    <button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>
+<ng-template #messageBox let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Message</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>{{AlertMessage}}</div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="saveGroup()">Save</button>
+    <button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>
+<div class="parentDisable" [hidden]="!processing"></div>
+<div class="loader" [hidden]="!processing"></div>
+<style>
+  .parentDisable {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #000;
+    opacity: 0.8;
+    z-index: 100000;
+    height: 100%;
+    width: 100%;
+  }
+
+  .loader {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 1000000;
+    width: 150px;
+    height: 150px;
+    margin: -75px 0 0 -75px;
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+  }
+
+  @-webkit-keyframes spin {
+    0% {
+      -webkit-transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Add animation to "page content" */
+
+  .animate-bottom {
+    position: relative;
+    -webkit-animation-name: animatebottom;
+    -webkit-animation-duration: 1s;
+    animation-name: animatebottom;
+    animation-duration: 1s
+  }
+
+  @-webkit-keyframes animatebottom {
+    from {
+      bottom: -100px;
+      opacity: 0
+    }
+    to {
+      bottom: 0px;
+      opacity: 1
+    }
+  }
+
+  @keyframes animatebottom {
+    from {
+      bottom: -100px;
+      opacity: 0
+    }
+    to {
+      bottom: 0;
+      opacity: 1
+    }
+  }
+</style>
